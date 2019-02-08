@@ -46,6 +46,12 @@ OptionParser.new do |opts|
         $options[:customsrc] = cs.to_s
     end
 
+    $options[:dist] = cv("dist")
+    opts.on("--dist <dist>",
+        "Defines custom language root .e.g 'kf5' (default) for fetching") do |lr|
+        $options[:dist] = lr.to_s
+    end
+
     $options[:gitbranch] = cv("gitbranch")
     opts.on("--git-branch BRANCH",
         "Defines Git branch to release from") do |gb|

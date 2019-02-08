@@ -18,6 +18,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+$dist="kf5"
+if $options[:dist]
+    $dist=$options[:dist]
+end
+
 module L10nCore
     def po_finder(pos=Array.new)
         Dir.glob("**/**/Messages.sh").each do |file|

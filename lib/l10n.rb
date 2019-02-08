@@ -25,9 +25,9 @@ include L10nCore
 
 def pofiledir?(lang)
     if SECTION.nil? or SECTION.empty? # e.g. kdereview
-        return "l10n-kde4/#{lang}/messages/#{COMPONENT}"
+        return "l10n-#{$dist}/#{lang}/messages/#{COMPONENT}"
     end
-    return "l10n-kde4/#{lang}/messages/#{COMPONENT}-#{SECTION}"
+    return "l10n-#{$dist}/#{lang}/messages/#{COMPONENT}-#{SECTION}"
 end
 
 def strip_comments(file)
@@ -109,7 +109,7 @@ def fetch_l10n
     Dir.mkdir pd
 
     pos       = po_finder
-    l10nlangs = %x[svn cat #{@repo}/l10n-kde4/subdirs].split("\n")
+    l10nlangs = %x[svn cat #{@repo}/l10n-#{$dist}/subdirs].split("\n")
     @l10n     = Array.new
 
     # Only do single fetches (svn export) if tagging is not used, or l10n could

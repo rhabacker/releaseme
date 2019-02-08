@@ -26,7 +26,7 @@ def fetch_doc
     dd = "doc"
     Dir.mkdir dd unless File.exists?("doc")
 
-    l10nlangs = %x[svn cat #{@repo}/l10n-kde4/subdirs].split("\n")
+    l10nlangs = %x[svn cat #{@repo}/l10n-#{$dist}/subdirs].split("\n")
     @docs     = []
 
     system("svn co #{@repo}/#{COMPONENT}/#{SECTION}/doc/#{NAME} doc/en_US")
@@ -56,9 +56,9 @@ def fetch_doc
         lang.chomp!
 
         if SECTION.nil? or SECTION.empty? # e.g. kdereview
-            docdirname = "l10n-kde4/#{lang}/docs/#{COMPONENT}/#{NAME}"
+            docdirname = "l10n-#{$dist}/#{lang}/docs/#{COMPONENT}/#{NAME}"
         else
-            docdirname = "l10n-kde4/#{lang}/docs/#{COMPONENT}-#{SECTION}/#{NAME}"
+            docdirname = "l10n-#{$dist}/#{lang}/docs/#{COMPONENT}-#{SECTION}/#{NAME}"
         end
         # TODO: ruby-svn
         FileUtils.rm_rf( "l10n" )
