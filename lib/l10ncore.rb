@@ -66,11 +66,17 @@ endif (NOT GETTEXT_MSGFMT_EXECUTABLE)
         cmakestr = cmakefile.read()
         cmakefile.rewind()
         cmakefile.truncate( 0 )
-        macro = "\ninclude(MacroOptionalAddSubdirectory)\nmacro_optional_add_subdirectory( #{dir} )\n"
+        prefix = "macro"
+        prefix_upper = "Macro"
+        if ($options[:ecm]) then
+            prefix = "ecm"
+            prefix_upper = "ECM"
+        end
+        macro = "\ninclude(#{prefix_upper}OptionalAddSubdirectory)\n#{prefix}_optional_add_subdirectory( #{dir} )\n"
         if cmakestr.include?("##{dir.upcase}_SUBDIR")
             cmakestr = cmakestr.sub("##{dir.upcase}_SUBDIR",macro)
         # TODO: should be a regex for whitespace lovers
-        elsif not cmakestr.include?("add_subdirectory(#{dir})") and not cmakestr.include?("macro_optional_add_subdirectory(#{dir})")
+        elsif not cmakestr.include?("add_subdirectory(#{dir})") and not cmakestr.include?("#{prefix}_optional_add_subdirectory(#{dir})")
             cmakestr << macro
         end
         cmakefile << cmakestr

@@ -52,6 +52,12 @@ OptionParser.new do |opts|
         $options[:dist] = lr.to_s
     end
 
+    $options[:ecm] = cv("ecm")
+    opts.on("--ecm --[no-]ecm",
+        "Defines usage of extra cmake modules (ECM) to add ") do |e|
+        $options[:ecm] = e.to_s
+    end
+
     $options[:gitbranch] = cv("gitbranch")
     opts.on("--git-branch BRANCH",
         "Defines Git branch to release from") do |gb|
