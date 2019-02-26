@@ -1,0 +1,8 @@
+[main]
+customsrc=git@git.kde.org:alkimia
+doc=true
+l10n=true
+protocol=anonsvn
+branch=trunk
+gitbranch=8.0
+barrier=75
