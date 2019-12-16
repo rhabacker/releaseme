@@ -71,6 +71,16 @@ def fetch_doc
         # use files from en_US as template
         text = File.read("doc/en_US/CMakeLists.txt")
         text = text.gsub("/en ", "/#{lang} ")
+        # umbrello specific optional subdir
+        if File.exists?("doc/en_US/apphelp/index.docbook") then
+            if Dir.exist?("doc/#{lang}/apphelp") then
+                text1 = File.read("doc/en_US/apphelp/CMakeLists.txt")
+                text1 = text1.gsub("/en ", "/#{lang} ")
+                File.open("doc/#{lang}/apphelp/CMakeLists.txt", "w") {|file| file.puts text1}
+            else
+                text = text.gsub(/add_subdirectory\(.*\)/, "")
+            end
+        end
         File.open("doc/#{lang}/CMakeLists.txt", "w") {|file| file.puts text}
 
         # add to SVN in case we are tagging
