@@ -41,9 +41,7 @@ def fetch_doc
     # On git a layout doc/{file,file,file} may appear, in this case we move stuff
     # to en_US
     if File.exists?("doc/index.docbook") and not File.exists?("doc/en_US") then
-        files = Dir.glob('doc/**/*')
-        Dir.mkdir('doc/en_US')
-        FileUtils.mv(files, 'doc/en_US')
+        system("mv doc en_US; mkdir doc; mv en_US doc")
         @docs += ["en_US"]
     end
 
