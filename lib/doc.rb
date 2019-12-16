@@ -29,7 +29,6 @@ def fetch_doc
     l10nlangs = %x[svn cat #{@repo}/l10n-#{$dist}/subdirs].split("\n")
     @docs     = []
 
-    system("svn co #{@repo}/#{COMPONENT}/#{SECTION}/doc/#{NAME} doc/en_US")
 
     # No documentation avilable -> leave me alone
     if not (File.exists?("doc/en_US") or File.exists?("doc/index.docbook")) then
