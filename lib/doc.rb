@@ -44,9 +44,11 @@ def fetch_doc
         @docs += ["en_US"]
     end
 
-    cmakefile = File.new( "doc/en_US/CMakeLists.txt", File::CREAT | File::RDWR | File::TRUNC )
-    cmakefile << "kde4_create_handbook(index.docbook INSTALL_DESTINATION \${HTML_INSTALL_DIR}/en SUBDIR #{NAME} )\n"
-    cmakefile.close
+    if not File.exists?("doc/en_US/index.docbook") then
+        cmakefile = File.new( "doc/en_US/CMakeLists.txt", File::CREAT | File::RDWR | File::TRUNC )
+        cmakefile << "kde4_create_handbook(index.docbook INSTALL_DESTINATION \${HTML_INSTALL_DIR}/en SUBDIR #{NAME} )\n"
+        cmakefile.close
+    end
 
     # docs
     for lang in l10nlangs
