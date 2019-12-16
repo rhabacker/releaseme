@@ -68,9 +68,10 @@ def fetch_doc
         puts("Copying #{lang}'s #{NAME} documentation over...")
         FileUtils.mv( "l10n", dest )
 
-        cmakefile = File.new( "doc/#{lang}/CMakeLists.txt", File::CREAT | File::RDWR | File::TRUNC )
-        cmakefile << "kde4_create_handbook(index.docbook INSTALL_DESTINATION \${HTML_INSTALL_DIR}/#{lang} SUBDIR #{NAME} )\n"
-        cmakefile.close
+        # use files from en_US as template
+        text = File.read("doc/en_US/CMakeLists.txt")
+        text = text.gsub("/en ", "/#{lang} ")
+        File.open("doc/#{lang}/CMakeLists.txt", "w") {|file| file.puts text}
 
         # add to SVN in case we are tagging
         `svn add doc/#{lang}/CMakeLists.txt`
