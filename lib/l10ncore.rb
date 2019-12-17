@@ -44,6 +44,7 @@ module L10nCore
 # Hence force the old policy for all po directories.
 # http://public.kitware.com/Bug/view.php?id=12952
 cmake_policy(SET CMP0002 OLD)
+set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS 1)
 
 find_package(Gettext REQUIRED)
 if (NOT GETTEXT_MSGMERGE_EXECUTABLE)
