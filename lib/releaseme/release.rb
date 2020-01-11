@@ -47,17 +47,23 @@ module ReleaseMe
     attr_reader :source
     # The archive object which will create the archive
     attr_reader :archive_
+    # The release path
+    attr_reader :release_path
+    # The bugzilla project
+    attr_reader :bugzilla_project
 
     # Init
     # @param project [Project] the Project to release
     # @param origin [Symbol] the origin to release from :trunk or :stable
     # @param version [String] the versin to release as
-    def initialize(project, origin, version)
+    def initialize(project, origin, version, bugzilla_project, release_path)
       @project = project
       @source = Source.new
       @archive_ = XzArchive.new
       @origin = origin
       @version = version
+      @bugzilla_project = bugzilla_project
+      @release_path = release_path
 
       # FIXME: this possibly should be logic inside Project itself?
       if project.vcs.is_a? Git
@@ -129,7 +135,20 @@ module ReleaseMe
       title = "Publish #{tar}"
       sha256s = [sig, tar].collect { |x| `sha256sum #{x}`.strip }
       sha1s = [sig, tar].collect { |x| `sha1sum #{x}`.strip }
-      template = HashTemplate.new(sha256s: sha256s, sha1s: sha1s, version: version)
+      if @bugzilla_project.nil? || @bugzilla_project.empty?
+         bugzilla_project = @project.identifier
+      else
+         bugzilla_project = @bugzilla_project
+      end
+      if @release_path.nil? || @release_path.empty?
+         release_path = "#{@origin}/#{@project.identifier}/#{@version}"
+      else
+        release_path = @release_path
+      end
+      template = HashTemplate.new(sha256s: sha256s, sha1s: sha1s, version: version,
+                                  project: project, origin: origin,
+                                  bugzilla_project: bugzilla_project,
+                                  release_path: release_path)
       template_file = "#{__dir__}/data/ticket_description.txt.erb"
       description = template.render(template_file)
       sysadmin_ticket_uri(title: title, description: description)

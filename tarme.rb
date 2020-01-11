@@ -51,6 +51,18 @@ OptionParser.new do |opts|
     ENV['RELEASEME_DEBUG'] = '1'
   end
 
+  opts.on('--bugzilla-project PROJECT', 'Bugzilla Project.',
+          '   Project name on bugs.kde.org' \
+          ' - if empty, the project name is used') do |v|
+    options[:bugzilla_project] = v
+  end
+
+  opts.on('--release-path path', 'Release path.',
+          '   Path on download.kde.org e.g. stable/alkimia/8.0.3' \
+          ' - if empty, <origin>/<project>/<version> is used') do |v|
+    options[:release_path] = v
+  end
+
   opts.separator ''
   opts.separator 'Manual Project Definition:'
 
@@ -91,7 +103,7 @@ end
 release_data_file = File.open('release_data', 'w')
 releases = release_projects.collect do |project|
   project_name = project.identifier
-  release = ReleaseMe::Release.new(project, options[:origin], options[:version])
+  release = ReleaseMe::Release.new(project, options[:origin], options[:version], options[:bugzilla_project], options[:release_path])
 
   # FIXME: ALL gets() need to have appropriate handling and must be able to
   #        throw exceptions or return false when something goes wrong
